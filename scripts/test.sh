@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-PORT=5001
+export PORT=5001
 
 python3 app.py &
 SERVER_PID=$!
