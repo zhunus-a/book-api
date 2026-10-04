@@ -58,4 +58,3 @@ Make sure the application is running, then execute:
 ```
 
 The tests check the main API endpoints and verify that the service returns the expected responses.
-
