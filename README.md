@@ -1,6 +1,8 @@
 # Book API
 
-A small HTTP service that provides information about books.
+## What it does
+
+This project is a small REST API for browsing a collection of Kazakh books. It allows users to get a welcome message, check whether the service is running, view all books, and retrieve information about a specific book by its ID.
 
 ## Features
 
