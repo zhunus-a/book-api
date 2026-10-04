@@ -1,7 +1,8 @@
 import requests
 
 
-BASE_URL = "http://127.0.0.1:8080"
+PORT = 5001
+BASE_URL = f"http://127.0.0.1:{PORT}"
 
 
 def test_home():
