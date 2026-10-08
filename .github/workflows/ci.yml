@@ -25,24 +25,31 @@ jobs:
           fi
           pip install flask requests pytest
 
-      - name: Start Flask server
+      - name: Start Flask and run tests
         run: |
           python -m flask --app app run --host 127.0.0.1 --port 5001 > flask.log 2>&1 &
-          echo $! > flask.pid
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
 
-      - name: Wait for server
-        run: |
           for i in {1..30}; do
             if curl -fsS http://127.0.0.1:5001/healthz; then
-              exit 0
+              break
+            fi
+            if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+              echo "Flask server exited"
+              cat flask.log
+              exit 1
             fi
             sleep 1
           done
-          cat flask.log
-          exit 1
 
-      - name: Run tests
-        run: python -m pytest -v
+          if ! curl -fsS http://127.0.0.1:5001/healthz; then
+            echo "Flask server is not ready"
+            cat flask.log
+            exit 1
+          fi
+
+          python -m pytest -v
 
       - name: Show server logs if failed
         if: failure()
