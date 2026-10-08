@@ -30,4 +30,3 @@ jobs:
           python-version: «3.12»
 
       - run: ./scripts/test.sh
-      - cache: pip
