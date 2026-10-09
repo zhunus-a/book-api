@@ -7,7 +7,7 @@ BASE_URL = f"http://127.0.0.1:{PORT}"
 
 def test_home():
     response = requests.get(BASE_URL + "/")
-    assert response.status_code == 999
+    assert response.status_code == 200
 
 
 def test_healthz():
