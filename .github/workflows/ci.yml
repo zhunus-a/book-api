@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - "v*"
   pull_request:
   workflow_dispatch:
 
@@ -84,14 +86,30 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}     
-
+      - name: Work out the tags
+        id: meta 
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302
+	with:
+	  images: ${{ env.IMAGE }}
+	  tags: |
+	    type=sha, format=long,prefix=
+	    type=semver,pattern={{version}}
+	    type=raw,value=latest,enable={{is_default_branch}}
+      - name: Work out the tags
+        id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=sha,format=long,prefix=
+            type=semver,pattern={{version}}
+            type=raw,value=latest,enable={{is_default_branch}}
       - name: Push - tagged with the commit SHA, and latest
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: .
           push: true
           # 7. in the first tag below: the commit being built - the tag M3 looks for
-          tags: |
-            ${{ env.IMAGE }}:${{ github.sha }}
-            ${{ env.IMAGE }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
+	  labels: ${{ steps.meta.outputs.labels }}
   
