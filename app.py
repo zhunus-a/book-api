@@ -188,7 +188,15 @@ books = [
 
 @app.route("/")
 def home():
-    return "Welcome to the Book API"
+    import os
+
+    greeting = os.environ.get("GREETING", "Welcome")
+    api_key = os.environ.get("API_KEY", "")
+
+    if not api_key:
+        app.logger.warning("API_KEY is not configured")
+
+    return f"{greeting} to the Book API"
 
 
 @app.route("/healthz")

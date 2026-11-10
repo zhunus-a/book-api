@@ -1,5 +1,15 @@
+./venv
+
+# Python virtual environments
+.venv/
 venv/
+
+# Python cache
 __pycache__/
-.pytest_cache/
 *.pyc
+
+# Local environment and secrets
+.env
+.env.*
 .DS_Store
+.pytest_cache/
