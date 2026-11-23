@@ -60,3 +60,18 @@ Make sure the application is running, then execute:
 ```
 
 The tests check the main API endpoints and verify that the service returns the expected responses.
+## Rollback
+
+Argo CD deploys from the `k8s/` folder on the `main` branch.
+Find the commit that changed the image and revert it.
+
+```bash
+git switch main
+git pull --ff-only
+git log --oneline -- k8s/deployment.yaml
+git revert -m 1 <merge-commit>
+git push origin main
+```
+
+For a squash merge, use `git revert <squash-commit>`. Argo CD picks up
+the revert on its next refresh and deploys the previous image.
