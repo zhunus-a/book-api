@@ -13,3 +13,12 @@ __pycache__/
 .env.*
 .DS_Store
 .pytest_cache/
+
+# Terraform: state holds real IDs and secrets; .terraform/ is a download cache.
+# Do NOT add .terraform.lock.hcl here - it must be committed.
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+*.tfplan
+crash.log
